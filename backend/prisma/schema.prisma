@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PapelFuncionario {
+  GERENTE
+  VENDEDOR
+}
+
+enum TipoProduto {
+  LIVRO
+  PAPELARIA
+}
+
+enum TipoMovimento {
+  SAIDA_VENDA
+  ENTRADA_AJUSTE
+}
+
+model Funcionario {
+  id        String   @id @default(cuid())
+  nome      String
+  email     String   @unique
+  senhaHash String
+  papel     PapelFuncionario
+  createdAt DateTime @default(now())
+
+  compras   Compra[]
+}
+
+model Cliente {
+  id        String   @id @default(cuid())
+  nome      String
+  email     String?  @unique
+  cpf       String?  @unique
+  createdAt DateTime @default(now())
+
+  compras   Compra[]
+}
+
+model Produto {
+  id          String         @id @default(cuid())
+  sku         String         @unique
+  nome        String
+  tipo        TipoProduto
+  preco       Decimal        @db.Decimal(10,2)
+  estoque     Int            @default(0)
+  createdAt   DateTime       @default(now())
+
+  detalhes    LivroDetalhe?
+  itens       ItemCompra[]
+  movimentos  MovimentoEstoque[]
+}
+
+model LivroDetalhe {
+  id        String  @id @default(cuid())
+  produtoId String  @unique
+  isbn      String? @unique
+  autor     String?
+  editora   String?
+
+  produto   Produto @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+}
+
+model Compra {
+  id            String      @id @default(cuid())
+  data          DateTime    @default(now())
+  total         Decimal     @db.Decimal(10,2)
+  clienteId     String?
+  funcionarioId String
+
+  cliente       Cliente?    @relation(fields: [clienteId], references: [id])
+  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
+  itens         ItemCompra[]
+  movimentos    MovimentoEstoque[]
+}
+
+model ItemCompra {
+  id         String   @id @default(cuid())
+  compraId   String
+  produtoId  String
+  quantidade Int
+  precoUnit  Decimal  @db.Decimal(10,2)
+
+  compra     Compra   @relation(fields: [compraId], references: [id], onDelete: Cascade)
+  produto    Produto  @relation(fields: [produtoId], references: [id])
+}
+
+model MovimentoEstoque {
+  id         String        @id @default(cuid())
+  produtoId  String
+  tipo       TipoMovimento
+  quantidade Int
+  data       DateTime      @default(now())
+  compraId   String?
+
+  produto    Produto @relation(fields: [produtoId], references: [id])
+  compra     Compra? @relation(fields: [compraId], references: [id])
+}

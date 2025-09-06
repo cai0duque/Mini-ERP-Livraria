@@ -1,0 +1,16 @@
+# Node / build
+node_modules/
+dist/
+.next/
+*.log
+
+# Env
+.env
+.env.*
+
+# OS
+.DS_Store
+
+# Monorepo
+backend/node_modules/
+frontend/node_modules/

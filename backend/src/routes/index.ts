@@ -1,5 +1,6 @@
 import { Router } from "express";
 import produtosRouter from "../modules/produto/routes";
+import movimentosRouter from "../modules/movimentoEstoque/routes";
 
 const router = Router();
 
@@ -8,5 +9,6 @@ router.get("/health", (_req, res) => {
 });
 
 router.use("/produtos", produtosRouter);
+router.use("/movimentos", movimentosRouter);
 
 export default router;

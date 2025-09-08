@@ -4,7 +4,7 @@ export const itemCompraSchema = z.object({
   produtoId: z.string().min(1),
   quantidade: z.number().int().positive(),
   // se não vier, o service usa o preço atual do produto
-  precoUnit: z.number().nonnegative().optional(),
+  precoUnit: z.number().positive().nullable().optional(),
 });
 
 export const compraCreateSchema = z.object({

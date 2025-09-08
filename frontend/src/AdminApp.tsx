@@ -205,7 +205,7 @@ const CompraCreate = () => (
             <AutocompleteInput optionText="nome" />
           </ReferenceInput>
           <NumberInput source="quantidade" />
-          <NumberInput source="precoUnit" label="Preço unitário (opcional)" />
+          <NumberInput source="precoUnit" label="Preço unitário (opcional)" parse={(v) => (v === '' || v === null ? undefined : Number(v))} />
         </SimpleFormIterator>
       </ArrayInput>
     </SimpleForm>

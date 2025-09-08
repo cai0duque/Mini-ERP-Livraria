@@ -3,6 +3,7 @@ import produtosRouter from "../modules/produto/routes";
 import movimentosRouter from "../modules/movimentoEstoque/routes";
 import clientesRouter from "../modules/cliente/routes";
 import funcionariosRouter from "../modules/funcionario/routes";
+import comprasRouter from "../modules/compra/routes";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/produtos", produtosRouter);
 router.use("/movimentos", movimentosRouter);
 router.use("/clientes", clientesRouter);
 router.use("/funcionarios", funcionariosRouter);
+router.use("/compras", comprasRouter);
 
 export default router;
